@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
-public class HelloController
+public class IndexController
 {
     @GetMapping("/")
     //获取浏览器过来的请求名为user的参数值，存到变量name中
