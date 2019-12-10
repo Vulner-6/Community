@@ -4,6 +4,7 @@ import life.majiang.community.controller.dto.AccessTokenDTO;
 import life.majiang.community.controller.dto.GithubUser;
 import life.majiang.community.controller.provider.GithubProvider;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -11,6 +12,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class AuthorizeController
 {
+    @Value("${github.client.id}")
+    private String clientId;
+    @Value("${github.client.secret}")
+    private String clientSecret;
+    @Value("${github.redirect.uri}")
+    private String redirectUri;
     @Autowired
     private GithubProvider githubProvider; //这个注解就是@Component加载类到内存中，现在取出来使用
     @GetMapping("/callback")
@@ -18,10 +25,10 @@ public class AuthorizeController
                            @RequestParam(name = "state") String state)
     {
         AccessTokenDTO accessTokenDTO=new AccessTokenDTO();
-        accessTokenDTO.setClient_id("90b80e0fb78768e4e286");
-        accessTokenDTO.setClient_secret("474f34fd0c3ee0ee604f6a3fa376d0bef8f770be");
+        accessTokenDTO.setClient_id(clientId);
+        accessTokenDTO.setClient_secret(clientSecret);
         accessTokenDTO.setCode(code);
-        accessTokenDTO.setRedirect_uri("http://localhost:8080/callback");
+        accessTokenDTO.setRedirect_uri(redirectUri);
         accessTokenDTO.setState(state);
         String accessToken=githubProvider.getAccessToken(accessTokenDTO);
         GithubUser githubUser =githubProvider.getUser(accessToken);
