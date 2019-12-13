@@ -1,4 +1,4 @@
-package life.majiang.community.controller.dto;
+package life.majiang.community.dto;
 
 public class AccessTokenDTO
 {
