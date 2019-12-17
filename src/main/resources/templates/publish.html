@@ -51,9 +51,9 @@
     </div>
 </nav>
 <!--栅格布局-->
-<div class="container-fluid">
-    <div class="row main" >
-        <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
+<div class="container-fluid main">
+    <div class="row" >
+        <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12 ">
             <h2><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>发起</h2>
             <!--问题标题表单-->
             <form method="post" action="/publish">
@@ -69,15 +69,22 @@
                     <label for="tag">提交标签</label>
                     <input type="text" class="form-control" id="tag" name="tag" placeholder="提交标签，以逗号隔开">
                 </div>
-                <button type="button" class="btn btn-danger" th:text="${error}">（危险）Danger</button>
+                <!--发布成功或者失败的提示-->
+                <button  type="button" class="btn btn-danger " th:text="${error}" th:if="${error}!=null"
+                         onclick="window.location.href='https://github.com/login/oauth/authorize?client_id=90b80e0fb78768e4e286&redirect_uri=http://localhost:8080/callback&scope=user&state=1'">
+                </button>
+                <button  type="button" class="btn btn-danger " th:text="${success}" th:if="${success}!=null"
+                + onclick="window.location.href='http://localhost:8080/'">
+                </button>
+                <button type="button" class="btn btn-danger" th:text="${nullError}" th:if="${nullError}!=null"></button>
                 <button type="submit" class="btn btn-success btn-publish">发布</button>
             </form>
         </div>
-        <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12" >
+        <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12 " >
             <h3>问题发起指南：</h3>
-            1.xxxxxxxxxxxxxxx
-            2.aaaaaaaaaaaaaaa
-            3.ddddddddddddddd
+            1.xxxxxxxxxxxxxxx<br>
+            2.aaaaaaaaaaaaaaa<br>
+            3.ddddddddddddddd<br>
         </div>
     </div>
 </div>

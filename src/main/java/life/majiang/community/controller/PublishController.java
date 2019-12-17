@@ -53,6 +53,12 @@ public class PublishController
                     //如果能获取到用户信息，也就是用户登录了
                     if(user!=null)
                     {
+                        //判断用户提交的参数是否为空
+                        if(title==null||title==""||description==null||description==""||tag==null||tag=="")
+                        {
+                            model.addAttribute("nullError","参数不能为空！");
+                            return "/publish";
+                        }
                         request.getSession().setAttribute("user",user);
                         //如果用户登录了
                         question.setTitle(title);
@@ -62,12 +68,12 @@ public class PublishController
                         question.setGmtCreate(System.currentTimeMillis());
                         question.setGmtModified(question.getGmtCreate());
                         questionMapper.create(question);
-
-                        return "redirect:/";
+                        model.addAttribute("success","发布成功！点击这里返回首页！");
+                        return "publish";
                     }
                     //如果有token字段，但是值是错的，无法获取到用户信息
                     else {
-                        model.addAttribute("error","用户没有登录");
+                        model.addAttribute("error","用户没有登录，点击这里进行登录！");
                         return "publish";
                     }
 
@@ -75,13 +81,13 @@ public class PublishController
                 //如果cookies中当前字段不是token字段，就什么都不做，下一轮循环
             }
             //遍历全部cookie，发现没有token字段
-            model.addAttribute("error","用户没有登录！！！");
+            model.addAttribute("error","用户没有登录，点击这里进行登录！");
             return "publish";
         }
         //如果客户端的cookie值为null
         else
         {
-            model.addAttribute("error","用户没有登录");
+            model.addAttribute("error","用户没有登录，点击这里进行登录！");
             return "publish";
         }
 
