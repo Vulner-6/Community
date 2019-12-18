@@ -8,7 +8,8 @@ import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Component;
 
 /**
- * mybytes框架的用法，这个类里面的所有方法，都是操作user表的
+ * mybytes框架的用法，这个类里面的所有方法，都是操作user表的.
+ * 默认mybates框架不会自动将数据表中的字段转换成驼峰命名的类中的属性。需要在application.properties中做设置。
  */
 @Component
 @Mapper
@@ -20,5 +21,8 @@ public interface UserMapper
     void insert(User user);
 
     @Select("SELECT * FROM user WHERE token = #{token}")
-    User findByToken(@Param("token") String token);//由于这里的token，是字符串，不是类，所以需要额外加个@Param注解
+    User findByToken(@Param("token") String token);//由于这里的token，不是自定义的类，所以需要额外加个@Param注解
+
+    @Select("SELECT * FROM user WHERE id=#{id}")
+    User findById(@Param("id") Integer id);
 }

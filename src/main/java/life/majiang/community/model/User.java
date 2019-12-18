@@ -2,6 +2,9 @@ package life.majiang.community.model;
 
 import org.springframework.stereotype.Component;
 
+/**
+ * 对应的数据库中，user数据表的数据模型对象
+ */
 @Component
 public class User
 {

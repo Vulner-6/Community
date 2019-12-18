@@ -1,12 +1,13 @@
-package life.majiang.community.model;
+package life.majiang.community.dto;
 
+import life.majiang.community.model.User;
 import org.springframework.stereotype.Component;
 
 /**
- * 对应的数据库中question数据表的数据模型对象
+ * 用于传输的数据模型，和数据表中的数据有点不一样。因此才要封装成DTO
  */
 @Component
-public class Question
+public class QuestionDTO
 {
     private Integer id;
     private String title;
@@ -18,6 +19,17 @@ public class Question
     private Integer viewCount;
     private Integer commentCount;
     private Integer likeCount;
+    private User user;
+
+    public User getUser()
+    {
+        return user;
+    }
+
+    public void setUser(User user)
+    {
+        this.user = user;
+    }
 
     public Integer getId()
     {
