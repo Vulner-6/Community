@@ -17,7 +17,7 @@ public interface QuestionMapper
             "#{description}," +
             "#{gmtCreate},#{gmtModified},#{creator},#{tag})")
     void create(Question question);
-    //查询数据库中的所有问题
-    @Select("SELECT * FROM question")
-    List<Question> list();
+    //查询数据库中指定范围的问题
+    @Select("SELECT * FROM question LIMIT #{offset},#{size}")
+    List<Question> list(Integer offset, Integer size);
 }

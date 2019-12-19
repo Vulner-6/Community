@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -24,7 +25,10 @@ public class IndexController
     @Autowired
     private QuestionService questionService;
     @GetMapping("/")
-    public String index(HttpServletRequest request, Model model)
+    public String index(HttpServletRequest request,
+                        Model model,
+                        @RequestParam(name = "page",defaultValue = "1") Integer page,
+                        @RequestParam(name = "size",defaultValue = "5") Integer size)
     {
         //获取cookie中的token值
         Cookie[] cookies=request.getCookies();
@@ -51,7 +55,7 @@ public class IndexController
             }
         }
         //从数据库中读取数据，显示列表
-        List<QuestionDTO> questionDTOList=questionService.list();
+        List<QuestionDTO> questionDTOList=questionService.list(page,size);
         model.addAttribute("questions",questionDTOList);
         return "index";
     }

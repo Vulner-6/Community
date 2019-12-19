@@ -26,9 +26,11 @@ public class QuestionService
     @Autowired
     private UserMapper userMapper;
 
-    public List<QuestionDTO> list()
+    public List<QuestionDTO> list(Integer page,Integer size)
     {
-        List<Question> questions=questionMapper.list();
+        //size*(page-1)，设置每次首页展示的问题数量
+        Integer offset=size*(page-1);
+        List<Question> questions=questionMapper.list(offset,size);
         List<QuestionDTO> questionDTOList=new ArrayList<QuestionDTO>();
         for(Question question:questions)
         {
