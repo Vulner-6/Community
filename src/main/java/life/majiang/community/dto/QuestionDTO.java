@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 
 /**
  * 用于传输的数据模型，和数据表中的数据有点不一样。因此才要封装成DTO
+ * 包含question表的全部字段，额外又增加了User数据模型
  */
 @Component
 public class QuestionDTO

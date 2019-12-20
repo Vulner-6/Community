@@ -1,10 +1,13 @@
 package life.majiang.community.dto;
 
+import org.springframework.stereotype.Component;
+
 import java.util.List;
 
 /**
  * 返回分页的信息
  */
+@Component
 public class PaginationDTO
 {
     //一般后端都是将数据传给前端，然后前端用js写分页。这里是教程弱化了js，才在后端这么写。
@@ -13,10 +16,146 @@ public class PaginationDTO
     private boolean showFirstPage;
     private boolean showNext;
     private boolean showEndPage;
+    private Integer totalPage;    //这个是数据表中数据总数
     //显示当前页
     private Integer page;
     //分页显示的数字页码数组
     private List<Integer> pages;
+    //分页页码跳转的链接
+    private List<String> pageUrlList;
+    //最后一页的url
+    private String endUrl;
+    //设置点击下一页，跳转的地址
+    private String pageKey="/?page=";
+    private String nextPage;
+    //设置点击上一页，跳转的地址
+    private String previousePage;
+
+    public void setPagination(Integer totalCount, Integer page, Integer size)
+    {
+        this.page=page;
+        //计算数据总共有多少页
+        if(totalCount % size ==0)
+        {
+            totalPage=totalCount / size;
+        }
+        else
+        {
+            totalPage=totalCount / size+1;
+        }
+        //设置最后一页的url值
+        endUrl=pageKey+totalPage;
+        //先设置下一页的url值，后面的if会纠正
+        nextPage=pageKey+(page+5);
+        //先设置上一页跳转的url值，后面的if会纠正
+        previousePage=pageKey+(page-5);
+        //判断当前页的值，决定如何返回跳转的链接
+        if(page>=1&&page<=5)
+        {
+            previousePage=pageKey+1;
+        }
+        if(page<=totalPage&&page>=totalPage-5)
+        {
+            nextPage=pageKey+totalPage;
+        }
+        //判断是否展示“上一页”标签
+        if(page==1)
+        {
+            showPrevious=false;
+        }
+        else
+        {
+            showPrevious=true;
+        }
+        //判断是否显示“下一页”标签
+        if(page==totalPage)
+        {
+            showNext=false;
+        }
+        else
+        {
+            showNext=true;
+        }
+        //判断是否显示“回到第一页”标签
+        if(pages.contains(1))
+        {
+            showFirstPage=false;
+        }
+        else
+        {
+            showEndPage=true;
+        }
+        //判断是否显示“跳转到最后一页”标签
+        if(pages.contains(totalPage))
+        {
+            showEndPage=false;
+        }
+        else
+        {
+            showEndPage=true;
+        }
+
+    }
+
+    public String getPreviousePage()
+    {
+        return previousePage;
+    }
+
+    public void setPreviousePage(String previousePage)
+    {
+        this.previousePage = previousePage;
+    }
+
+    public String getEndUrl()
+    {
+        return endUrl;
+    }
+
+    public void setEndUrl(String endUrl)
+    {
+        this.endUrl = endUrl;
+    }
+
+    public Integer getTotalPage()
+    {
+        return totalPage;
+    }
+
+    public String getPageKey()
+    {
+        return pageKey;
+    }
+
+    public void setPageKey(String pageKey)
+    {
+        this.pageKey = pageKey;
+    }
+
+    public String getNextPage()
+    {
+        return nextPage;
+    }
+
+    public void setNextPage(String nextPage)
+    {
+        this.nextPage = nextPage;
+    }
+
+    public void setTotalPage(Integer totalPage)
+    {
+        this.totalPage = totalPage;
+    }
+
+    public List<String> getPageUrlList()
+    {
+        return pageUrlList;
+    }
+
+    public void setPageUrlList(List<String> pageUrlList)
+    {
+        this.pageUrlList = pageUrlList;
+    }
 
     public List<QuestionDTO> getQuestionDTOList()
     {
@@ -87,4 +226,6 @@ public class PaginationDTO
     {
         this.pages = pages;
     }
+
+
 }

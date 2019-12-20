@@ -1,6 +1,6 @@
 package life.majiang.community.controller;
 
-import life.majiang.community.dto.QuestionDTO;
+import life.majiang.community.dto.PaginationDTO;
 import life.majiang.community.mapper.QuestionMapper;
 import life.majiang.community.mapper.UserMapper;
 import life.majiang.community.model.User;
@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 
 @Controller
 public class IndexController
@@ -55,8 +54,8 @@ public class IndexController
             }
         }
         //从数据库中读取数据，显示列表
-        List<QuestionDTO> questionDTOList=questionService.list(page,size);
-        model.addAttribute("questions",questionDTOList);
+        PaginationDTO paginationDTO =questionService.list(page,size);
+        model.addAttribute("questions",paginationDTO);
         return "index";
     }
 }

@@ -1,5 +1,6 @@
 package life.majiang.community.service;
 
+import life.majiang.community.dto.PaginationDTO;
 import life.majiang.community.dto.QuestionDTO;
 import life.majiang.community.mapper.QuestionMapper;
 import life.majiang.community.mapper.UserMapper;
@@ -25,8 +26,10 @@ public class QuestionService
     private QuestionMapper questionMapper;
     @Autowired
     private UserMapper userMapper;
+    @Autowired
+    private PaginationDTO paginationDTO;
 
-    public List<QuestionDTO> list(Integer page,Integer size)
+    public PaginationDTO list(Integer page, Integer size)
     {
         //size*(page-1)，设置每次首页展示的问题数量
         Integer offset=size*(page-1);
@@ -43,6 +46,23 @@ public class QuestionService
             questionDTO.setUser(user);
             questionDTOList.add(questionDTO);
         }
-        return questionDTOList;
+
+        //配置paginationDTO的数据值
+        paginationDTO.setQuestionDTOList(questionDTOList);
+        Integer totalCount=questionMapper.count();
+        //根据当前页，设置分页显示数组的中的值
+        List<Integer> pagesList=new ArrayList<Integer>();
+        List<String> pageUrlList=new ArrayList<String>();
+        for(int i=page;i<page+size;i++)
+        {
+            pagesList.add(i);
+            String temp="/?page="+i+"";
+            pageUrlList.add(temp);
+
+        }
+        paginationDTO.setPages(pagesList);
+        paginationDTO.setPageUrlList(pageUrlList);
+        paginationDTO.setPagination(totalCount,page,size);    //一些对对象赋值的操作，尽量都封装在对象内部
+        return paginationDTO;
     }
 }
