@@ -50,15 +50,28 @@ public class QuestionService
         //配置paginationDTO的数据值
         paginationDTO.setQuestionDTOList(questionDTOList);
         Integer totalCount=questionMapper.count();
+        Integer tempTotalPages;
+        if(totalCount%5==0)
+        {
+            tempTotalPages =totalCount/5;
+        }
+        else
+        {
+            tempTotalPages =totalCount/5+1;
+        }
+
         //根据当前页，设置分页显示数组的中的值
         List<Integer> pagesList=new ArrayList<Integer>();
         List<String> pageUrlList=new ArrayList<String>();
-        for(int i=page;i<page+size;i++)
+        for(int i = page; i<= page+5; i++)
         {
-            pagesList.add(i);
-            String temp="/?page="+i+"";
-            pageUrlList.add(temp);
-
+            //防止分页最后一排，超出最大页数做的判断
+            if(i<=tempTotalPages)
+            {
+                pagesList.add(i);
+                String temp="/?page="+i+"";
+                pageUrlList.add(temp);
+            }
         }
         paginationDTO.setPages(pagesList);
         paginationDTO.setPageUrlList(pageUrlList);
