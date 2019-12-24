@@ -46,8 +46,9 @@ public class IndexController
                     user= userMapper.findByToken(token);
                     if(user != null)
                     {
-                        //给前端模板设置user属性
+                        //给会话设置user属性
                         request.getSession().setAttribute("user",user);
+
                     }
                     break;
                 }
