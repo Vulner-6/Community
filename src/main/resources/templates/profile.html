@@ -20,7 +20,23 @@
         <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12 ">
             <h2><span class="glyphicon " aria-hidden="true" th:text="${sectionName}"></span></h2>
             <hr>
-
+            <!--我的问题展示列表-->
+            <div class="media" th:each="question:${questions.getQuestionDTOList()}">
+                <div class="media-left media-middle">
+                    <a href="#">
+                        <img class="media-object img-rounded"
+                             th:src="${question.user.getAvatarUrl()}" alt="...">
+                    </a>
+                </div>
+                <div class="media-body">
+                    <h4 class="media-heading" th:text="${question.title}">怎么快速学会spring boot开发</h4>
+                    <span th:text="${question.getDescription()}"></span><br>
+                    <span class="text-desc">
+                        <span th:text="${question.getCommentCount()}">2</span>个回复 &
+                        <span th:text="${question.getViewCount()}">31</span>次浏览 &
+                        <span th:text="${#dates.format(question.getGmtCreate(),'yyyy-MM-dd HH:mm')}">1</span></span>
+                </div>
+            </div>
         </div>
         <!--页面右侧部分-->
         <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12 profile" >

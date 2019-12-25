@@ -29,6 +29,12 @@ public class QuestionService
     @Autowired
     private PaginationDTO paginationDTO;
 
+    /**
+     * index页面的分页列表
+     * @param page
+     * @param size
+     * @return
+     */
     public PaginationDTO list(Integer page, Integer size)
     {
         //size*(page-1)，设置每次首页展示的问题数量
@@ -38,12 +44,19 @@ public class QuestionService
         for(Question question:questions)
         {
             //根据提交问题的创建者，找对应的User对象
-            User user =userMapper.findById(question.getCreator());
+            User user =userMapper.findById(question.getCreatorId());
             QuestionDTO questionDTO=new QuestionDTO();
             //将提交的问题所有的属性，挨个拷贝到questionDTO中
             BeanUtils.copyProperties(question,questionDTO);
             //设置之前封装的questionDTO中设置的user属性
-            questionDTO.setUser(user);
+            if(user!=null)
+            {
+                questionDTO.setUser(user);
+            }
+            else
+            {
+                System.out.println("user is null!");
+            }
             questionDTOList.add(questionDTO);
         }
 
@@ -77,5 +90,25 @@ public class QuestionService
         paginationDTO.setPageUrlList(pageUrlList);
         paginationDTO.setPagination(totalCount,page,size);    //一些对对象赋值的操作，尽量都封装在对象内部
         return paginationDTO;
+    }
+
+    public PaginationDTO myQuestionsList(String creator,Integer page,Integer size)
+    {
+        //利用公式，算出每页显示的数量
+        Integer offset=size*(page-1);
+        List<Question> questionList=questionMapper.myQuestionsList(creator,offset,size);
+        //封装questionDTO
+        User user=userMapper.findByAccountId(creator);
+        List<QuestionDTO> questionDTOList=new ArrayList<QuestionDTO>();
+        for(Question question:questionList)
+        {
+            QuestionDTO questionDTO=new QuestionDTO();
+            BeanUtils.copyProperties(question,questionDTO);
+            questionDTO.setUser(user);
+            questionDTOList.add(questionDTO);
+        }
+
+
+        return null;
     }
 }

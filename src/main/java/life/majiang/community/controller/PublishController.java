@@ -64,9 +64,10 @@ public class PublishController
                         question.setTitle(title);
                         question.setDescription(description);
                         question.setTag(tag);
-                        question.setCreator(user.getId());
+                        question.setCreator(user.getAccountId());
                         question.setGmtCreate(System.currentTimeMillis());
                         question.setGmtModified(question.getGmtCreate());
+                        question.setCreatorId(user.getId());
                         questionMapper.create(question);
                         model.addAttribute("success","发布成功！点击这里返回首页！");
                         return "publish";

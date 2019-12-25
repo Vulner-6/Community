@@ -14,10 +14,21 @@ public class Question
     private String tag;
     private Long gmtCreate;
     private Long gmtModified;
-    private Integer creator;
+    private String creator;
     private Integer viewCount;
     private Integer commentCount;
     private Integer likeCount;
+    private Integer creatorId;
+
+    public Integer getCreatorId()
+    {
+        return creatorId;
+    }
+
+    public void setCreatorId(Integer creatorId)
+    {
+        this.creatorId = creatorId;
+    }
 
     public Integer getId()
     {
@@ -79,12 +90,12 @@ public class Question
         this.gmtModified = gmtModified;
     }
 
-    public Integer getCreator()
+    public String getCreator()
     {
         return creator;
     }
 
-    public void setCreator(Integer creator)
+    public void setCreator(String creator)
     {
         this.creator = creator;
     }

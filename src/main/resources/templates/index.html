@@ -24,7 +24,7 @@
                 <div class="media-left media-middle">
                     <a href="#">
                         <img class="media-object img-rounded"
-                             th:src="${question.getUser().getAvatarUrl()}" alt="...">
+                             th:src="${question.user.getAvatarUrl()}" alt="...">
                     </a>
                 </div>
                 <div class="media-body">
@@ -41,7 +41,7 @@
                 <ul class="pagination">
                     <li><a href="/?page=1">首页</a></li>
                     <li  th:if="${questions.isShowPrevious()}">
-                        <a th:href="${questions.getPreviousePage()}" aria-label="Previous">
+                        <a th:href="${questions.getPreviousPage()}" aria-label="Previous">
                             <span aria-hidden="true">&laquo;</span>
                         </a>
                     </li>
