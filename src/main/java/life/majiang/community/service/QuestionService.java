@@ -88,17 +88,17 @@ public class QuestionService
         }
         paginationDTO.setPages(pagesList);
         paginationDTO.setPageUrlList(pageUrlList);
-        paginationDTO.setPagination(totalCount,page,size);    //一些对对象赋值的操作，尽量都封装在对象内部
+        paginationDTO.setPagination(totalCount,page,size,"/?page=");    //一些对对象赋值的操作，尽量都封装在对象内部
         return paginationDTO;
     }
 
-    public PaginationDTO myQuestionsList(String creator,Integer page,Integer size)
+    public PaginationDTO myQuestionsList(User user,Integer page,Integer size)
     {
-        //利用公式，算出每页显示的数量
+
+        //利用公式，算出每页显示的问题范围
         Integer offset=size*(page-1);
-        List<Question> questionList=questionMapper.myQuestionsList(creator,offset,size);
-        //封装questionDTO
-        User user=userMapper.findByAccountId(creator);
+        List<Question> questionList=questionMapper.myQuestionsList(user.getAccountId(),offset,size);
+        //封装questionDTO，并组装成列表
         List<QuestionDTO> questionDTOList=new ArrayList<QuestionDTO>();
         for(Question question:questionList)
         {
@@ -108,7 +108,35 @@ public class QuestionService
             questionDTOList.add(questionDTO);
         }
 
+        //以下内容都是进行分页的组装
+        paginationDTO.setQuestionDTOList(questionDTOList);
+        Integer totalPage=0;
+        Integer myQuestionCount=questionMapper.myQuestionsCount(user.getAccountId());
+        //判断我的问题的总页数
+        if(myQuestionCount%5==0)
+        {
+            totalPage=myQuestionCount/5;
+        }
+        else if (myQuestionCount%5>0)
+        {
+            totalPage=myQuestionCount/5+1;
+        }
+        //设置分页列表总数
+        List<Integer> pagesList=new ArrayList<Integer>();
+        List<String> pageUrlList=new ArrayList<String>();
+        for(int i = page; i<= page+5; i++)
+        {
+            //防止分页最后一排，超出最大页数做的判断
+            if(i<=totalPage)
+            {
+                pagesList.add(i);
+                String temp="/profile/questions?page="+i+"";
+                pageUrlList.add(temp);
+            }
+        }
+        paginationDTO.setPages(pagesList);
+        paginationDTO.setPagination(myQuestionCount,page,size,"/profile/questions?page=");
 
-        return null;
+        return paginationDTO;
     }
 }

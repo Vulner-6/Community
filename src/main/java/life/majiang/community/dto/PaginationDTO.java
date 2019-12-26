@@ -26,7 +26,7 @@ public class PaginationDTO
     //最后一页的url
     private String endUrl;
     //设置点击下一页，跳转的地址
-    private String pageKey="/?page=";
+    private String pageKey;
     private String nextPage;
     //设置点击上一页，跳转的地址
     private String previousPage;
@@ -37,8 +37,9 @@ public class PaginationDTO
      * @param page
      * @param size
      */
-    public void setPagination(Integer totalCount, Integer page, Integer size)
+    public void setPagination(Integer totalCount, Integer page, Integer size,String pageKey)
     {
+        this.pageKey=pageKey;
         this.page=page;
         //计算数据总共有多少页
         if(totalCount % size ==0)
@@ -50,15 +51,15 @@ public class PaginationDTO
             totalPage=totalCount / size+1;
         }
         //设置最后一页的url值
-        endUrl=pageKey+totalPage;
+        endUrl=this.pageKey+totalPage;
         //先设置下一页的url值，后面的if会纠正
-        nextPage=pageKey+(page+5);
+        nextPage=this.pageKey+(page+5);
         //先设置上一页跳转的url值，后面的if会纠正
-        previousPage =pageKey+(page-5);
+        previousPage =this.pageKey+(page-5);
         //判断当前页的值，决定如何返回跳转的链接
         if(page>=1&&page<=5)
         {
-            previousPage =pageKey+1;
+            previousPage =this.pageKey+1;
         }
         if(page<=totalPage&&page>=totalPage-5)
         {
