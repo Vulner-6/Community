@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
 @Controller
@@ -38,57 +37,31 @@ public class PublishController
             Model model
             )
     {
-        //先判断用户是否登录
-        Cookie[] cookies=request.getCookies();
-        if(cookies!=null)
+        User user=(User) request.getSession().getAttribute("user");
+        if(user==null)
         {
-            //遍历cookie中的字段
-            for(Cookie cookie:cookies)
-            {
-                //如果cookies中当前字段为token字段，就去数据库中查询user，返回User对象
-                if(cookie.getName().equals("token"))
-                {
-                    String token=cookie.getValue();
-                    user=userMapper.findByToken(token);
-                    //如果能获取到用户信息，也就是用户登录了
-                    if(user!=null)
-                    {
-                        //判断用户提交的参数是否为空
-                        if(title==null||title==""||description==null||description==""||tag==null||tag=="")
-                        {
-                            model.addAttribute("nullError","参数不能为空！");
-                            return "/publish";
-                        }
-                        request.getSession().setAttribute("user",user);
-                        //如果用户登录了
-                        question.setTitle(title);
-                        question.setDescription(description);
-                        question.setTag(tag);
-                        question.setCreator(user.getAccountId());
-                        question.setGmtCreate(System.currentTimeMillis());
-                        question.setGmtModified(question.getGmtCreate());
-                        question.setCreatorId(user.getId());
-                        questionMapper.create(question);
-                        model.addAttribute("success","发布成功！点击这里返回首页！");
-                        return "publish";
-                    }
-                    //如果有token字段，但是值是错的，无法获取到用户信息
-                    else {
-                        model.addAttribute("error","用户没有登录，点击这里进行登录！");
-                        return "publish";
-                    }
-
-                }
-                //如果cookies中当前字段不是token字段，就什么都不做，下一轮循环
-            }
-            //遍历全部cookie，发现没有token字段
             model.addAttribute("error","用户没有登录，点击这里进行登录！");
             return "publish";
         }
-        //如果客户端的cookie值为null
         else
         {
-            model.addAttribute("error","用户没有登录，点击这里进行登录！");
+            //判断用户提交的参数是否为空
+            if(title==null||title==""||description==null||description==""||tag==null||tag=="")
+            {
+                model.addAttribute("nullError","参数不能为空！");
+                return "/publish";
+            }
+            request.getSession().setAttribute("user",user);
+            //如果用户登录了
+            question.setTitle(title);
+            question.setDescription(description);
+            question.setTag(tag);
+            question.setCreator(user.getAccountId());
+            question.setGmtCreate(System.currentTimeMillis());
+            question.setGmtModified(question.getGmtCreate());
+            question.setCreatorId(user.getId());
+            questionMapper.create(question);
+            model.addAttribute("success","发布成功！点击这里返回首页！");
             return "publish";
         }
 

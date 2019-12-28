@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
 @Controller
@@ -36,39 +35,10 @@ public class ProfileController
             @RequestParam(name="size",defaultValue = "5") Integer size)
     {
         //判断用户是否登录，有没有访问权限
-        //获取cookie中的token值
-        Cookie[] cookies=request.getCookies();
-        String token=null;
-        User user=new User();
+        User user=(User)request.getSession().getAttribute("user");
         //判断浏览器中的cookie是否为Null
-        if(cookies!=null&&cookies.length>0)
+        if(user==null)
         {
-            for(Cookie cookie : cookies)
-            {
-                //判断是否有登录凭证token,如果有，则判断token是否正确
-                if(cookie.getName().equals("token"))
-                {
-                    token=cookie.getValue();
-                    //根据cookie的token值，查询user信息
-                    user= userMapper.findByToken(token);
-                    //如果能根据登录凭证token获取user信息，就在会话中设置user属性
-                    if(user != null)
-                    {
-                        //给会话设置user属性
-                        request.getSession().setAttribute("user",user);
-
-                    }
-                    break;
-                }
-            }
-            //如果cookie中多次遍历都没有token字段,session中也就没有user属性
-            if(request.getSession().getAttribute("user")==null)
-            {
-                return "redirect:/";
-            }
-        }
-        //如果cookie为null
-        else{
             return "redirect:/";
         }
 
