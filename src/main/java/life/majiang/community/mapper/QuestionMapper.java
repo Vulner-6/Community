@@ -35,4 +35,8 @@ public interface QuestionMapper
     @Select("SELECT * FROM question WHERE creator=#{creator} LIMIT #{offset},#{size}")
     List<Question> myQuestionsList(@Param("creator") String creator,@Param("offset") Integer offset,
                                    @Param("size") Integer size);
+
+    //根据问题的ID查询问题
+    @Select("SELECT * FROM question WHERE id=#{id}")
+    Question getById(@Param("id") Integer id);
 }

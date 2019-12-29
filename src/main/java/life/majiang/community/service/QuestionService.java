@@ -92,6 +92,13 @@ public class QuestionService
         return paginationDTO;
     }
 
+    /**
+     * profile页面的分页列表
+     * @param user
+     * @param page
+     * @param size
+     * @return
+     */
     public PaginationDTO myQuestionsList(User user,Integer page,Integer size)
     {
 
@@ -138,5 +145,22 @@ public class QuestionService
         paginationDTO.setPagination(myQuestionCount,page,size,"/profile/questions?page=");
 
         return paginationDTO;
+    }
+
+    public QuestionDTO getById(Integer id)
+    {
+        Question question=questionMapper.getById(id);
+        if(question!=null)
+        {
+            QuestionDTO questionDTO=new QuestionDTO();
+            User user=userMapper.findById(question.getCreatorId());
+            BeanUtils.copyProperties(question,questionDTO);
+            questionDTO.setUser(user);
+            return questionDTO;
+        }
+        else
+        {
+            return null;
+        }
     }
 }
