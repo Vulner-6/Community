@@ -67,4 +67,16 @@ public class AuthorizeController
         }
 
     }
+
+    @GetMapping("/logout")
+    public String logout(HttpServletRequest request,HttpServletResponse response)
+    {
+        //销毁会话
+        request.getSession().removeAttribute("user");
+        //覆盖cookie中的token凭证
+        Cookie cookie=new Cookie("token",null);
+        cookie.setMaxAge(0);
+        response.addCookie(cookie);
+        return "redirect:/";
+    }
 }
