@@ -8,7 +8,6 @@ import life.majiang.community.model.Question;
 import life.majiang.community.model.User;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -18,7 +17,7 @@ import java.util.List;
  * 当需要组装不同的数据模型时，就需要service层。
  * 比如，这里需要组装QuestionMapper和UserMapper相关的操作时，就需要再额外封装一个service类。
  */
-@Component
+
 @Service
 public class QuestionService
 {
@@ -147,6 +146,11 @@ public class QuestionService
         return paginationDTO;
     }
 
+    /**
+     * 根据question id返回QuestionDTO对象
+     * @param id
+     * @return
+     */
     public QuestionDTO getById(Integer id)
     {
         Question question=questionMapper.getById(id);
@@ -161,6 +165,21 @@ public class QuestionService
         else
         {
             return null;
+        }
+    }
+
+    public void createOrUpdate(Question question)
+    {
+        if(question.getId()==null)
+        {
+            //创建新记录
+            questionMapper.create(question);
+        }
+        else
+        {
+            //编辑已有记录
+            question.setGmtModified(System.currentTimeMillis());
+            questionMapper.update(question);
         }
     }
 }

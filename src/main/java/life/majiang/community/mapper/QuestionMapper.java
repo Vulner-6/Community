@@ -1,10 +1,7 @@
 package life.majiang.community.mapper;
 
 import life.majiang.community.model.Question;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -39,4 +36,11 @@ public interface QuestionMapper
     //根据问题的ID查询问题
     @Select("SELECT * FROM question WHERE id=#{id}")
     Question getById(@Param("id") Integer id);
+
+    //根据id更新指定记录(如果传入的是自定义的持久层数据类型，那么可以直接传入成员变量，mybatis框架可以识别)
+    @Update("UPDATE question SET title=#{title},gmt_modified=#{gmtModified},description=#{description},tag=#{tag} " +
+            "WHERE " +
+            "id=#{id}")
+    Boolean update(Question question);
+
 }

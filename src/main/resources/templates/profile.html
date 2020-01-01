@@ -29,7 +29,9 @@
                     </a>
                 </div>
                 <div class="media-body">
+                    <a th:href="@{'/question/'+${questionDTO.getId()}}">
                     <h4 class="media-heading" th:text="${questionDTO.title}">怎么快速学会spring boot开发</h4>
+                    </a>
                     <span th:text="${questionDTO.getDescription()}"></span><br>
                     <span class="text-desc">
                         <span th:text="${questionDTO.getCommentCount()}">2</span>个回复 &

@@ -31,7 +31,7 @@
                 <span th:text="${question.getDescription()}"></span>
                 <hr>
                 <hr>
-                <a th:href="@{'/question/'+${question.id}}"><span class="glyphicon glyphicon-edit" aria-hidden="true"
+                <a th:href="@{'/publish/'+${question.id}}"><span class="glyphicon glyphicon-edit" aria-hidden="true"
                        th:if="${question.user.id}==${question.getCreatorId()}">编辑</span></a>
             </div>
 
