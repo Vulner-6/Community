@@ -41,6 +41,10 @@ public interface QuestionMapper
     @Update("UPDATE question SET title=#{title},gmt_modified=#{gmtModified},description=#{description},tag=#{tag} " +
             "WHERE " +
             "id=#{id}")
-    Boolean update(Question question);
+    void update(Question question);
+
+    //阅读数量自加1
+    @Update("UPDATE question SET view_count=view_count+1 WHERE id=#{id}")
+    void viewCountAdd(@Param("id") Integer id);
 
 }

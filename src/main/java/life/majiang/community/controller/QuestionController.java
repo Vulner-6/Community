@@ -21,6 +21,8 @@ public class QuestionController
         QuestionDTO questionDTO =questionService.getById(id);
         if(questionDTO!=null)
         {
+            //获取客户端ip
+            questionService.viewCountAdd(id);
             model.addAttribute("question",questionDTO);
         }
         return "question";

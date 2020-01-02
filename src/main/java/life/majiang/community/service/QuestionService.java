@@ -168,6 +168,10 @@ public class QuestionService
         }
     }
 
+    /**
+     *
+     * @param question
+     */
     public void createOrUpdate(Question question)
     {
         if(question.getId()==null)
@@ -181,5 +185,10 @@ public class QuestionService
             question.setGmtModified(System.currentTimeMillis());
             questionMapper.update(question);
         }
+    }
+
+    public void viewCountAdd(Integer id)
+    {
+        questionMapper.viewCountAdd(id);
     }
 }
