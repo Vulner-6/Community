@@ -1,15 +1,15 @@
 package life.majiang.community.controller;
 
 import life.majiang.community.dto.CommentDTO;
+import life.majiang.community.dto.ResultDTO;
 import life.majiang.community.mapper.CommentMapper;
 import life.majiang.community.model.Comment;
+import life.majiang.community.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,8 +21,16 @@ public class CommentController
 
     @ResponseBody
     @RequestMapping(value = "/comment",method = RequestMethod.POST)
-    public Object post(@RequestBody CommentDTO commentDTO)   //为了将前端传过来的json自动赋值到CommentDTO对象中
+    public Object post(
+            @RequestBody CommentDTO commentDTO,
+            HttpServletRequest request)   //为了将前端传过来的json自动赋值到CommentDTO对象中
     {
+        //判断是否有权限发表评论
+        User user=(User) request.getSession().getAttribute("user");
+        if(user==null)
+        {
+            return ResultDTO.errorOf(2002,"未登录不能进行评论，请先登录！");
+        }
         //将前端传过来的json赋值给CommentDTO对象，再将CommentDTO对象中的成员属性赋值给Comment模型
         Comment comment=new Comment();
         comment.setParentId(commentDTO.getParentId());
