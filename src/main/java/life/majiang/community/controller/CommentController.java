@@ -19,7 +19,7 @@ public class CommentController
     @Autowired
     private CommentMapper commentMapper;
 
-    @ResponseBody
+    @ResponseBody   //responseBody注解，会自动的将返回的对象转换成json格式
     @RequestMapping(value = "/comment",method = RequestMethod.POST)
     public Object post(
             @RequestBody CommentDTO commentDTO,
@@ -38,8 +38,9 @@ public class CommentController
         comment.setCommentType(commentDTO.getCommentType());
         comment.setGmtCreate(System.currentTimeMillis());
         comment.setGmtModified(comment.getGmtCreate());
-        comment.setCommentator(1);   //先测试一下
+        comment.setCommentator(user.getId());   //先测试一下
         comment.setLikeCount(0L);
+        comment.setId(1111l);
         commentMapper.insert(comment);
         //由于加了@ResponseBody的注解，所以如果返回对象，框架就会自动将对象转换成utf8格式的json数据，如果返回字符串，则会时iso编码的字符串（可能导致乱码）
         Map<Object,Object> objectObjectHashMap = new HashMap<>();
